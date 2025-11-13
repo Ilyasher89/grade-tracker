@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="ru" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <!-- Динамический заголовок: если у grade есть id, то "Редактировать", иначе "Добавить" -->
+    <title th:text="${grade.id} ? 'Редактировать оценку' : 'Добавить новую оценку'">Добавить оценку</title>
+    <link rel="stylesheet" th:href="@{/css/custom-style.css}">
+</head>
+<body>
+
+<!-- Динамический заголовок страницы -->
+<h1 th:text="${grade.id} ? 'Редактировать оценку' : 'Добавить новую оценку'">Добавить новую оценку</h1>
+
+<!-- Форма. th:action - куда отправлять данные. th:object - с каким объектом работаем -->
+<form th:action="@{/grades/save}" th:object="${grade}" method="post">
+
+    <!-- Скрытое поле для ID. Нужно при редактировании, чтобы знать, какую запись обновлять -->
+    <input type="hidden" th:field="*{id}">
+
+    <div class="form-group">
+        <label for="studentName">Студент:</label>
+        <!-- th:field - связывает это поле input с свойством 'studentName' объекта 'grade' -->
+        <input type="text" id="studentName" th:field="*{studentName}" required>
+    </div>
+
+    <div class="form-group">
+        <label for="subject">Предмет:</label>
+        <input type="text" id="subject" th:field="*{subject}" required>
+    </div>
+
+    <div class="form-group">
+        <label for="grade">Оценка:</label>
+        <input type="number" id="grade" th:field="*{grade}" min="1" max="5" required>
+    </div>
+
+    <div class="form-group">
+        <!-- Кнопка для отправки формы -->
+        <button type="submit">Сохранить</button>
+        <!-- Ссылка для отмены и возврата к списку -->
+        <a th:href="@{/grades}">Отмена</a>
+    </div>
+</form>
+
+</body>
+</html>

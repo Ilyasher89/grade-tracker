@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="ru" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Журнал Оценок</title>
+    <!-- Подключаем наш уникальный внешний CSS файл -->
+    <link rel="stylesheet" th:href="@{/css/custom-style.css}">
+</head>
+<body>
+
+<h1>Журнал Оценок</h1>
+
+<!-- Кнопка для добавления новой оценки -->
+<a th:href="@{/grades/new}" class="btn-primary">Добавить новую оценку</a>
+
+<!-- Таблица для отображения оценок -->
+<table>
+    <thead>
+    <tr>
+        <th>ID</th>
+        <th>Студент</th>
+        <th>Предмет</th>
+        <th>Оценка</th>
+        <th>Действия</th>
+    </tr>
+    </thead>
+    <tbody>
+    <!-- Thymeleaf цикл: для каждой оценки в списке "grades" создает строку таблицы -->
+    <tr th:each="grade : ${grades}">
+        <td th:text="${grade.id}"></td>
+        <td th:text="${grade.studentName}"></td>
+        <td th:text="${grade.subject}"></td>
+        <td th:text="${grade.grade}"></td>
+        <td>
+            <!-- Ссылка для редактирования -->
+            <a th:href="@{/grades/edit/{id}(id=${grade.id})}" class="btn-action btn-edit">Редактировать</a>
+            <!-- Ссылка для удаления -->
+            <a th:href="@{/grades/delete/{id}(id=${grade.id})}" class="btn-action btn-delete">Удалить</a>
+        </td>
+    </tr>
+    </tbody>
+</table>
+
+</body>
+</html>
