@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+  <title>Register - Grade Tracker</title>
+  <link rel="stylesheet" th:href="@{/css/custom-style.css}">
+</head>
+<body>
+<div class="auth-container">
+  <div class="auth-card">
+    <!-- Заголовок -->
+    <div class="auth-header">
+      <h1 class="auth-title">📊 Grade Tracker</h1>
+      <p class="auth-subtitle">Создайте аккаунт</p>
+    </div>
+
+    <!-- Сообщения об ошибках -->
+    <div th:if="${error}" class="alert alert-error" th:text="${error}"></div>
+
+    <!-- Форма регистрации -->
+    <form class="auth-form" th:action="@{/auth/register}" method="post" th:object="${user}">
+      <div class="form-group">
+        <label>Логин:</label>
+        <input type="text" th:field="*{username}" placeholder="Придумайте логин" required>
+        <small>Будет использоваться для входа в систему</small>
+      </div>
+
+      <div class="form-group">
+        <label>Пароль:</label>
+        <input type="password" th:field="*{password}" placeholder="Придумайте пароль" required>
+        <small>Пароль будет надежно зашифрован</small>
+      </div>
+
+      <button type="submit" class="btn-auth">🎯 Зарегистрироваться</button>
+    </form>
+
+    <div class="auth-links">
+      <p>Уже есть аккаунт? <a th:href="@{/auth/login}">Войти</a></p>
+    </div>
+  </div>
+</div>
+</body>
+</html>

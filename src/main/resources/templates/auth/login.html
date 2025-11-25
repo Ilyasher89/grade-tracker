@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Login - Grade Tracker</title>
+    <link rel="stylesheet" th:href="@{/css/custom-style.css}">
+</head>
+<body>
+<div class="auth-container">
+    <div class="auth-card">
+        <!-- Заголовок -->
+        <div class="auth-header">
+            <h1 class="auth-title">📊 Grade Tracker</h1>
+            <p class="auth-subtitle">Войдите в систему</p>
+        </div>
+
+        <!-- Сообщения -->
+        <div th:if="${param.error}" class="alert alert-error">
+            ❌ Неправильный логин или пароль
+        </div>
+        <div th:if="${param.logout}" class="alert alert-success">
+            ✅ Вы успешно вышли из системы
+        </div>
+        <div th:if="${param.success}" class="alert alert-success">
+            🎉 Регистрация успешна! Теперь можете войти.
+        </div>
+
+        <!-- Форма входа -->
+        <form class="auth-form" th:action="@{/auth/login}" method="post">
+            <div class="form-group">
+                <label>Логин:</label>
+                <input type="text" name="username" placeholder="Введите ваш логин" required>
+            </div>
+
+            <div class="form-group">
+                <label>Пароль:</label>
+                <input type="password" name="password" placeholder="Введите ваш пароль" required>
+            </div>
+
+            <button type="submit" class="btn-auth">🔐 Войти</button>
+        </form>
+
+        <div class="auth-links">
+            <p>Нет аккаунта? <a th:href="@{/auth/register}">Зарегистрироваться</a></p>
+        </div>
+    </div>
+</div>
+</body>
+</html>

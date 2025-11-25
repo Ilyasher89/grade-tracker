@@ -1,45 +1,60 @@
 <!DOCTYPE html>
-<html lang="ru" xmlns:th="http://www.thymeleaf.org">
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 <head>
-    <meta charset="UTF-8">
-    <title>Журнал Оценок</title>
-    <!-- Подключаем наш уникальный внешний CSS файл -->
+    <title>Grade Tracker</title>
     <link rel="stylesheet" th:href="@{/css/custom-style.css}">
 </head>
 <body>
+<!-- Навигационное меню -->
+<nav class="navbar">
+    <div class="nav-brand">📊 Grade Tracker</div>
+    <div class="nav-links">
+        <span sec:authentication="name" class="user-info"></span>
+        <a th:href="@{/grades}">Главная</a>
 
-<h1>Журнал Оценок</h1>
+        <!-- Показывать только ADMIN -->
+        <a sec:authorize="hasRole('ADMIN')" th:href="@{/grades/add}">Добавить оценку</a>
 
-<!-- Кнопка для добавления новой оценки -->
-<a th:href="@{/grades/new}" class="btn-primary">Добавить новую оценку</a>
+        <!-- Кнопка выхода -->
+        <form th:action="@{/auth/logout}" method="post" style="display: inline;">
+            <button type="submit">Выйти</button>
+        </form>
+    </div>
+</nav>
 
-<!-- Таблица для отображения оценок -->
-<table>
-    <thead>
-    <tr>
-        <th>ID</th>
-        <th>Студент</th>
-        <th>Предмет</th>
-        <th>Оценка</th>
-        <th>Действия</th>
-    </tr>
-    </thead>
-    <tbody>
-    <!-- Thymeleaf цикл: для каждой оценки в списке "grades" создает строку таблицы -->
-    <tr th:each="grade : ${grades}">
-        <td th:text="${grade.id}"></td>
-        <td th:text="${grade.studentName}"></td>
-        <td th:text="${grade.subject}"></td>
-        <td th:text="${grade.grade}"></td>
-        <td>
-            <!-- Ссылка для редактирования -->
-            <a th:href="@{/grades/edit/{id}(id=${grade.id})}" class="btn-action btn-edit">Редактировать</a>
-            <!-- Ссылка для удаления -->
-            <a th:href="@{/grades/delete/{id}(id=${grade.id})}" class="btn-action btn-delete">Удалить</a>
-        </td>
-    </tr>
-    </tbody>
-</table>
+<div class="container">
+    <h1>Список оценок</h1>
 
+    <!-- Таблица оценок -->
+    <table class="grades-table">
+        <thead>
+        <tr>
+            <th>Студент</th>
+            <th>Предмет</th>
+            <th>Оценка</th>
+            <th sec:authorize="hasRole('ADMIN')">Действия</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="grade : ${grades}">
+            <td th:text="${grade.studentName}"></td>
+            <td th:text="${grade.subject}"></td>
+            <td th:text="${grade.grade}"></td>
+            <td sec:authorize="hasRole('ADMIN')">
+                <a th:href="@{/grades/edit/{id}(id=${grade.id})}" class="btn-edit">✏️</a>
+                <a th:href="@{/grades/delete/{id}(id=${grade.id})}"
+                   class="btn-delete"
+                   onclick="return confirm('Удалить эту оценку?')">🗑️</a>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+
+    <!-- Сообщение если нет оценок -->
+    <div th:if="${grades.empty}" class="empty-message">
+        Нет оценок для отображения
+    </div>
+</div>
 </body>
 </html>
